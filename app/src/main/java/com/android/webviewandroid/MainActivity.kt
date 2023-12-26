@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.webkit.*
@@ -17,7 +16,7 @@ import com.android.webviewandroid.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
-    private val webViewUrl: String = "https://www.google.com"
+    private var webViewUrl = BuildConfig.WEBVIEW_URL
     private lateinit var binding: ActivityMainBinding
     private var upload: ValueCallback<Array<Uri>>? = null
     var backPressedCount = 0
