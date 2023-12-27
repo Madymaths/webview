@@ -1,5 +1,6 @@
-package com.android.webviewandroid
+package com.cgs.webview
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -12,7 +13,7 @@ import android.webkit.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.android.webviewandroid.databinding.ActivityMainBinding
+import com.cgs.webview.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         loadWebView()
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun loadWebView() {
         if (Uri.parse(webViewUrl).isAbsolute) {
             binding.also {
@@ -52,8 +54,9 @@ class MainActivity : AppCompatActivity() {
                 it.webView.settings.setSupportZoom(false)
                 it.webView.settings.loadWithOverviewMode = true
                 it.webView.settings.javaScriptCanOpenWindowsAutomatically = true
-                it.webView.settings.setSupportMultipleWindows(true)
+                it.webView.settings.setSupportMultipleWindows(false)
                 it.webView.settings.domStorageEnabled = true
+                it.webView.settings.databaseEnabled = true
                 it.webView.settings.allowFileAccess = true
                 it.progressBar.visibility = View.VISIBLE
                 it.webView.clearHistory()
@@ -74,6 +77,18 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         super.onReceivedError(view, request, error)
                         it.progressBar.visibility = View.GONE
+                    }
+
+                    override fun shouldOverrideUrlLoading(
+                        view: WebView?,
+                        request: WebResourceRequest?
+                    ): Boolean {
+                        view?.loadUrl(request?.url.toString())
+                        return true
+                    }
+
+                    override fun onLoadResource(view: WebView?, url: String?) {
+                        super.onLoadResource(view, url)
                     }
                 }
                 it.webView.setDownloadListener { url, _, _, _, _ ->

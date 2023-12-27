@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.android.webviewandroid'
+    namespace 'com.cgs.webview'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.android.webviewandroid"
+        applicationId "com.cgs.webview"
         minSdk 24
         targetSdk 34
         versionCode project.hasProperty('versionCode') ? project.property('versionCode').toInteger() : 1
