@@ -75,6 +75,14 @@ class MainActivity : AppCompatActivity() {
                         super.onReceivedError(view, request, error)
                         it.progressBar.visibility = View.GONE
                     }
+
+                    override fun shouldOverrideUrlLoading(
+                        view: WebView?,
+                        request: WebResourceRequest?
+                    ): Boolean {
+                        view?.loadUrl(request?.url.toString())
+                        return true
+                    }
                 }
                 it.webView.setDownloadListener { url, _, _, _, _ ->
                     val i = Intent(Intent.ACTION_VIEW)
