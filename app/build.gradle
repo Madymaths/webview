@@ -46,6 +46,30 @@ android {
         }
     }
 //    buildDir = "C:\\Users\\CSS\\Downloads\\ASD"
+
+    task("copyBase64AppIcon") {
+        doLast {
+            // Retrieve the Base64-encoded foreground icon from project properties
+            def base64ForegroundIcon = project.hasProperty('base64AppIcon') ? project.base64AppIcon : ""
+
+            if (!base64ForegroundIcon.isEmpty()) {
+                // Decode Base64 to get the foreground icon bytes
+                def foregroundIconBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64ForegroundIcon)
+
+                def foregroundIconFile = file("src/main/res/drawable/ic_launcher_foreground.png")
+
+                if (foregroundIconFile.exists()) {
+                    foregroundIconFile.delete()
+                }
+
+                foregroundIconFile.withOutputStream { outputStream ->
+                    outputStream.write(foregroundIconBytes)
+                }
+            }
+        }
+    }
+
+    tasks.preBuild.dependsOn("copyBase64AppIcon")
 }
 
 dependencies {
