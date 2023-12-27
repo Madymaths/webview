@@ -1,4 +1,4 @@
-package com.android.webviewandroid
+package com.cgs.webview
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.android.webviewandroid", appContext.packageName)
+        assertEquals("com.cgs.webview", appContext.packageName)
     }
 }

@@ -1,4 +1,4 @@
-package com.android.webviewandroid
+package com.cgs.webview
 
 import org.junit.Test
 
