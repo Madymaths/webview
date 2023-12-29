@@ -19,11 +19,22 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        config {
+            keyAlias project.hasProperty('keyAlias') ? project.property('keyAlias') : ""
+            keyPassword project.hasProperty('keyPass') ? project.property('keyPass') : ""
+            storeFile file('keystore/key_file.keystore')
+            storePassword project.hasProperty('keyPass') ? project.property('keyPass') : ""
+        }
+    }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (project.hasProperty('keyAlias')) {
+                signingConfig signingConfigs.config
+            }
         }
     }
     buildFeatures {
@@ -37,14 +48,6 @@ android {
         jvmTarget = '1.8'
     }
 
-    signingConfigs {
-        config {
-            keyAlias 'key0'
-            keyPassword '123456'
-            storeFile file('keystore/key_file.jks')
-            storePassword '123456'
-        }
-    }
 }
 
 dependencies {
