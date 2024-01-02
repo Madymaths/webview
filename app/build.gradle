@@ -8,7 +8,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.cgs.webview"
+        applicationId project.hasProperty('appID') ? project.property('appID') : "com.cgs.webview"
         minSdk 24
         targetSdk 34
         versionCode project.hasProperty('versionCode') ? project.property('versionCode').toInteger() : 1
