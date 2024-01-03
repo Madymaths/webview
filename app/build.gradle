@@ -13,7 +13,6 @@ android {
         targetSdk 34
         versionCode project.hasProperty('versionCode') ? project.property('versionCode').toInteger() : 1
         versionName project.hasProperty('versionName') ? project.property('versionName') : "1.0"
-        resValue "string", "app_name", project.hasProperty('appName') ? project.property('appName') : "Webview"
         buildConfigField "String", "WEBVIEW_URL", "\"${project.hasProperty('webViewUrl') ? project.property('webViewUrl') : 'https://google.com'}\""
 
 
@@ -70,6 +69,24 @@ android {
     }
 
     preBuild.dependsOn("modifyColorsXml")
+
+    tasks.register("modifyStringsXml") {
+        doLast {
+            def stringsXmlFile = file("${project.projectDir}/src/main/res/values/strings.xml")
+
+            if (stringsXmlFile.exists() && project.hasProperty('appName')) {
+                def appName = project.property('appName')
+
+                def content = stringsXmlFile.getText()
+                content = content.replaceAll('<string name="app_name">.*?</string>', '<string name="app_name">' + appName + '</string>')
+                stringsXmlFile.write(content)
+            } else {
+                throw new GradleException("strings.xml not found or 'appName' property not provided!")
+            }
+        }
+    }
+
+    preBuild.dependsOn("modifyStringsXml")
 
 }
 
