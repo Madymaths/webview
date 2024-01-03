@@ -48,6 +48,29 @@ android {
         jvmTarget = '1.8'
     }
 
+    tasks.register("modifyColorsXml") {
+        doLast {
+            def colorsXmlFile = file("${project.projectDir}/src/main/res/values/colors.xml")
+
+            if (colorsXmlFile.exists() && project.hasProperty('splashBg')) {
+                def splashBgColor = project.property('splashBg')
+
+                // Validate the color code using a regular expression
+                if (!splashBgColor.matches("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})")) {
+                    println("Invalid color code format for 'splashBg'. It should be in the format #RRGGBB or #AARRGGBB. Skipping modification.")
+                } else {
+                    def content = colorsXmlFile.getText()
+                    content = content.replaceAll('<color name="splash_bg">.*?</color>', '<color name="splash_bg">' + splashBgColor + '</color>')
+                    colorsXmlFile.write(content)
+                }
+            } else {
+                println("colors.xml not found or 'splashBg' property not provided. Skipping modification.")
+            }
+        }
+    }
+
+    preBuild.dependsOn("modifyColorsXml")
+
 }
 
 dependencies {
